@@ -1,10 +1,14 @@
 public class Mage implements Role {
     private double health;
     private Staff staff;
+    private int resource;
+    private Ability ability;
 
-    public Mage(double health,Staff staff) {
+    public Mage(double health,Staff staff,int resource,Ability ability) {
         this.health = health;
         this.staff = staff;
+        this.resource = resource;
+        this.ability = ability;
     }
 
     public Staff getStaff() {
@@ -18,6 +22,11 @@ public class Mage implements Role {
     @Override
     public double health() {
         return health;
+    }
+
+    @Override
+    public int resource() {
+        return resource;
     }
 
     @Override
