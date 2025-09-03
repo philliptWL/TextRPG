@@ -28,8 +28,7 @@ public class Barbarian implements Role {
     }
 
     @Override
-    public String type() {
-        return "barbarian";
-    }
+    public String type() { return "Barbarian"; }
+
 }
 

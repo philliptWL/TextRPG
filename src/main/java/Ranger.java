@@ -30,6 +30,6 @@ public class Ranger implements Role {
 
     @Override
     public String type() {
-        return "ranger";
+        return "Ranger";
     }
 }

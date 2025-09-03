@@ -31,6 +31,6 @@ public class Mage implements Role {
 
     @Override
     public String type() {
-        return "mage";
+        return "Mage";
     }
 }

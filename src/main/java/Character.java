@@ -14,15 +14,17 @@ public class Character {
     public void setName(String name) {
         this.name = name;
     }
+
     public boolean isDead() {
         return dead;
     }
-    public void setDead(boolean dead) {
 
-    }
+    public void setDead(boolean dead) { this.dead = dead; }
+
     public Role getRole() {
         return role;
     }
+
     public void setRole(Role role) {
         this.role = role;
     }
