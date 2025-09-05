@@ -11,4 +11,24 @@ public class Charge implements Ability {
     public int cost() {
         return 20;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getDamage() {
+        return damage;
+    }
+
+    @Override
+    public double getHeal() {
+        return 0;
+    }
+
+    @Override
+    public double getEvasion() {
+        return 0;
+    }
 }

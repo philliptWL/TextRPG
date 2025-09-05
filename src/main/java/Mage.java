@@ -1,36 +1,72 @@
 public class Mage implements Role {
     private double health;
-    private Staff staff;
+    private Weapon weapon;
     private int resource;
     private Ability ability;
 
     public Mage(double health,Staff staff,int resource,Ability ability) {
         this.health = health;
-        this.staff = staff;
+        this.weapon = staff;
         this.resource = resource;
         this.ability = ability;
     }
 
-    public Staff getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Staff staff) {
-        this.staff = staff;
+    @Override
+    public Weapon getWeapon() {
+        return weapon;
     }
 
     @Override
-    public double health() {
+    public Ability getAbility() {
+        return ability;
+    }
+
+    @Override
+    public String useWeapon() {
+        return "Empower " + getWeapon().name();
+    }
+
+    @Override
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
+    @Override
+    public void setResource(int resource) {
+        this.resource = resource;
+    }
+
+    public void setWeapon(Staff weapon) {
+        this.weapon = weapon;
+    }
+
+    @Override
+    public double getHealth() {
         return health;
     }
 
     @Override
-    public int resource() {
+    public int getResource() {
         return resource;
     }
 
     @Override
     public String type() {
         return "Mage";
+    }
+
+    @Override
+    public void resetHealth() {
+        health = 90.0;
+    }
+
+    @Override
+    public void resetResource() {
+        resource = 110;
+    }
+
+    @Override
+    public int useAbility(){
+        return resource - ability.cost();
     }
 }

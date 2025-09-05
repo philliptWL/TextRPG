@@ -1,5 +1,13 @@
 public interface Role {
-    public double health();
-    public int resource();
-    public String type();
+    double getHealth();
+    int getResource();
+    String type();
+    void resetHealth();
+    void resetResource();
+    int useAbility();
+    Weapon getWeapon();
+    Ability getAbility();
+    String useWeapon();
+    void setHealth(double health);
+    void setResource(int resource);
 }

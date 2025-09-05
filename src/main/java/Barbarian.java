@@ -1,34 +1,70 @@
 public class Barbarian implements Role {
     private double health;
-    private Sword sword;
+    private Weapon weapon;
     private int resource;
     private Ability ability;
 
     public Barbarian( double health, Sword sword, int resource, Ability ability) {
         this.health = health;
-        this.sword = sword;
+        this.weapon = sword;
         this.resource = resource;
         this.ability = ability;
     }
-
-    public Sword getSword() {
-        return sword;
-    }
-    public void setSword(Sword sword) {
-        this.sword = sword;
-    }
     @Override
-    public double health() {
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    @Override
+    public Ability getAbility() {
+        return ability;
+    }
+
+    @Override
+    public String useWeapon() {
+        return "Swing " + getWeapon().name();
+    }
+
+    @Override
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
+    @Override
+    public void setResource(int resource) {
+        this.resource = resource;
+    }
+
+    public void setWeapon(Sword weapon) {
+        this.weapon = weapon;
+    }
+
+    @Override
+    public double getHealth() {
         return health;
     }
 
     @Override
-    public int resource() {
+    public int getResource() {
         return resource;
     }
 
     @Override
     public String type() { return "Barbarian"; }
 
+    @Override
+    public void resetHealth() {
+        health = 110.0;
+    }
+
+    @Override
+    public void resetResource() {
+        resource = 80;
+    }
+
+    @Override
+    public int useAbility(){
+        return resource - ability.cost();
+    }
 }
 

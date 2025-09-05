@@ -10,4 +10,24 @@ public class Restore implements Ability{
     public int cost() {
         return 40;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getDamage() {
+        return 0;
+    }
+
+    @Override
+    public double getHeal() {
+        return restore;
+    }
+
+    @Override
+    public double getEvasion() {
+        return 0;
+    }
 }

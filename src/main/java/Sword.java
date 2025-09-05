@@ -21,4 +21,9 @@ public class Sword implements Weapon{
     public String attackType() {
         return "swing";
     }
+
+    @Override
+    public double useWeapon(double health) {
+        return health - damage;
+    }
 }

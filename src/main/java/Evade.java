@@ -11,4 +11,24 @@ public class Evade implements Ability {
     public int cost() {
         return 30;
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getDamage() {
+        return 0;
+    }
+
+    @Override
+    public double getHeal() {
+        return 0;
+    }
+
+    @Override
+    public double getEvasion() {
+        return 0;
+    }
 }

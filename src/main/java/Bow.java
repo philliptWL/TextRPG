@@ -21,4 +21,9 @@ public class Bow implements Weapon{
     public String attackType() {
         return "fire";
     }
+
+    @Override
+    public double useWeapon(double health) {
+        return health - damage;
+    }
 }

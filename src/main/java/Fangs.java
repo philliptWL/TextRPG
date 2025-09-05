@@ -1,12 +1,11 @@
-public class Staff implements Weapon {
+public class Fangs implements Weapon{
     private String name;
     private double damage;
 
-    public Staff(String name, double damage) {
+    public Fangs(String name, double damage) {
         this.name = name;
         this.damage = damage;
     }
-
     @Override
     public String name() {
         return name;
@@ -19,7 +18,7 @@ public class Staff implements Weapon {
 
     @Override
     public String attackType() {
-        return "cast";
+        return "bite";
     }
 
     @Override

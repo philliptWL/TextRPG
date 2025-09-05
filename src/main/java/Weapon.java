@@ -1,5 +1,6 @@
 public interface Weapon {
-    public String name();
-    public double damage();
-    public String attackType();
+    String name();
+    double damage();
+    String attackType();
+    double useWeapon(double health);
 }
