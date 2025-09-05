@@ -3,4 +3,5 @@ public interface Weapon {
     double damage();
     String attackType();
     double useWeapon(double health);
+    double setWeaponDamage(double damage);
 }

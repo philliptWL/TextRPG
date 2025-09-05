@@ -2,7 +2,7 @@ public class Sword implements Weapon{
     private String name;
     private double damage;
 
-    public Sword(String name, int damage) {
+    public Sword(String name, double damage) {
         this.name = name;
         this.damage = damage;
     }
@@ -25,5 +25,10 @@ public class Sword implements Weapon{
     @Override
     public double useWeapon(double health) {
         return health - damage;
+    }
+
+    @Override
+    public double setWeaponDamage(double damage) {
+        return this.damage = damage;
     }
 }

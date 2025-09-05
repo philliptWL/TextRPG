@@ -26,4 +26,9 @@ public class Bow implements Weapon{
     public double useWeapon(double health) {
         return health - damage;
     }
+
+    @Override
+    public double setWeaponDamage(double damage) {
+        return this.damage = damage;
+    }
 }
