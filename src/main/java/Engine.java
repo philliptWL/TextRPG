@@ -9,8 +9,10 @@ public class Engine{
         boolean blGameOver = false;
         ArrayList<String> path = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
+        int response;
 
         //Intro
+        logo();
         gameIntro();
 
         //RPGCharacter creation
@@ -18,40 +20,53 @@ public class Engine{
         postCharacterCreation(player);
 
         menu(new String[]{"Continue through the Cinder Gate."},true);
+        response = scan.nextInt();
+
         //Game loop
-        while (!blGameOver) {
-            if (scan.nextInt() == 1) {
-                //First decision and encounter
-                path = startJourney(player, path, scan);
-                firstEncounter(player, path, scan);
-                resetPlayerStats(player);
-                increasePlayerLevel(player,2);
+        switch (response) {
+            case 1:
+                while(!blGameOver) {
+                    //First decision and encounter
+                    path = startJourney(player, path, scan);
+                    blGameOver = firstEncounter(player, path, scan);
+                    if (blGameOver) break;
+                    resetPlayerStats(player);
+                    increasePlayerLevel(player, 2);
 
-                //Second decision and encounter
-                path = decisionSecondPath(player, path, scan);
-                secondEncounter(player, path, scan);
-                resetPlayerStats(player);
-                increasePlayerLevel(player,3);
+                    //Second decision and encounter
+                    path = decisionSecondPath(player, path, scan);
+                    blGameOver = secondEncounter(player, path, scan);
+                    if (blGameOver) break;
+                    resetPlayerStats(player);
+                    increasePlayerLevel(player, 3);
 
-                //Third encounter based on previous decision
-                pathConverges(path);
-                thirdEncounter(player, path, scan);
-                resetPlayerStats(player);
-                increasePlayerLevel(player,4);
+                    //Third encounter based on previous decision
+                    pathConverges(path);
+                    blGameOver = thirdEncounter(player, path, scan);
+                    if (blGameOver) break;
+                    resetPlayerStats(player);
+                    increasePlayerLevel(player, 4);
 
-                //Final encounter
-                encounterAshKing(player,scan);
-                gameOutro(player,path);
-                blGameOver = true;
-            } else {
-                blGameOver = isGameOver(player, scan, true);
-            }
+                    //Final encounter
+                    blGameOver = encounterAshKing(player, scan);
+                    if (blGameOver) break;
+                    gameOutro(player, path);
+                    blGameOver = true;
+                }
+                break;
+            case 0:
+                isGameOver(player, scan, true);
+                scan.close();
+                return;
+            default:
+                optInvalid("option");
+                break;
         }
         scan.close();
     }
 
+
     private static boolean isGameOver(RPGCharacter player, Scanner scan, boolean override) {
-        int response = scan.nextInt();
 
         if(player.isDead()){
             typeOut(String.format("""
@@ -63,7 +78,8 @@ public class Engine{
                     Your journey has ended...
                     """,25);
             menu(new String[]{"Restart?"},true);
-            }
+        }
+        int response = scan.nextInt();
         switch (response) {
             case 1:
                 start();
@@ -202,9 +218,9 @@ public class Engine{
         return staff;
     }
 
-    private static void selectWeaponDialogue(String name, String weapon) {
+    public static void selectWeaponDialogue(String name, String weapon) {
         typeOut(String.format("""
-                Ah, %s is it? I see, well then you will be needing a weapon. Which of these %s catches your eye?
+                %s is it? I see, well then you will be needing a weapon. Which of these %s catches your eye?
                 """, name, weapon), 25);
     }
 
@@ -411,7 +427,7 @@ public class Engine{
         return path;
     }
 
-    public static void firstEncounter(RPGCharacter player, ArrayList<String> path, Scanner scan) {
+    public static boolean firstEncounter(RPGCharacter player, ArrayList<String> path, Scanner scan) {
         RPGCharacter enemy;
         RPGCharacter victorious = null;
         int fight = 0;
@@ -471,7 +487,7 @@ public class Engine{
         }
 
         assert victorious != null;
-        combatDecisionFirstEncounter(player, scan, victorious, fight);
+        return combatDecisionFirstEncounter(player, scan, victorious, fight);
     }
 
     public static void victoryAshWolf(RPGCharacter player) {
@@ -516,23 +532,24 @@ public class Engine{
             """, player.getName()), 25);
     }
 
-    private static void combatDecisionFirstEncounter(RPGCharacter player, Scanner scan, RPGCharacter victorious, int fight) {
+    public static boolean combatDecisionFirstEncounter(RPGCharacter player, Scanner scan, RPGCharacter victorious, int fight) {
         assert victorious != null;
         if(victorious.equals(player)){
             switch(fight){
                 case 1:
                     victoryAshWolf(player);
-                    break;
+                    return false;
                 case 2:
                     victoryEmberKnight(player);
-                    break;
+                    return false;
             }
         }else {
-            isGameOver(player,scan,false);
+            return isGameOver(player,scan,false);
         }
+        return true;
     }
 
-    public static void secondEncounter(RPGCharacter player, ArrayList<String> path, Scanner scan) {
+    public static boolean secondEncounter(RPGCharacter player, ArrayList<String> path, Scanner scan) {
         RPGCharacter enemy;
         RPGCharacter victorious = null;
         String name = player.getName();
@@ -635,7 +652,7 @@ public class Engine{
                 break;
         }
         assert victorious != null;
-        combatDecisionSecondEncounter(player, scan, victorious, fight);
+        return combatDecisionSecondEncounter(player, scan, victorious, fight);
     }
 
     public static void victoryCinderSerpent(RPGCharacter player) {
@@ -718,29 +735,30 @@ public class Engine{
         """, player.getName()), 25);
     }
 
-    private static void combatDecisionSecondEncounter(RPGCharacter player, Scanner scan, RPGCharacter victorious, int fight) {
+    public static boolean combatDecisionSecondEncounter(RPGCharacter player, Scanner scan, RPGCharacter victorious, int fight) {
         assert victorious != null;
         if(victorious.equals(player)){
             switch(fight){
                 case 1:
                     victoryCinderSerpent(player);
-                    break;
+                    return false;
                 case 2:
                     victoryAshWraith(player);
-                    break;
+                    return false;
                 case 3:
                     victoryGutterGhoul(player);
-                    break;
+                    return false;
                 case 4:
                     victoryCinderTreant(player);
-                    break;
+                    return false;
             }
         }else {
-            isGameOver(player,scan,false);
+           return isGameOver(player,scan,false);
         }
+        return true;
     }
 
-    private static void pathConverges(ArrayList<String> path){
+    public static void pathConverges(ArrayList<String> path){
 
         typeOut("""
                 You come to the final obstacle on the path to the Obsidian Gates.
@@ -762,7 +780,7 @@ public class Engine{
         }
     }
 
-    private static void thirdEncounter(RPGCharacter player, ArrayList<String> path, Scanner scan) {
+    public static boolean thirdEncounter(RPGCharacter player, ArrayList<String> path, Scanner scan) {
         RPGCharacter enemy;
         RPGCharacter victorious = null;
         String name = player.getName();
@@ -813,7 +831,7 @@ public class Engine{
                 break;
         }
         assert victorious != null;
-        combatDecisionThirdEncounter(player,scan,victorious,fight);
+        return combatDecisionThirdEncounter(player,scan,victorious,fight);
     }
 
     public static void victoryAshCantor(RPGCharacter player) {
@@ -856,23 +874,24 @@ public class Engine{
                 """,player.getName()), 25);
     }
 
-    private static void combatDecisionThirdEncounter(RPGCharacter player, Scanner scan, RPGCharacter victorious, int fight) {
+    public static boolean combatDecisionThirdEncounter(RPGCharacter player, Scanner scan, RPGCharacter victorious, int fight) {
         assert victorious != null;
         if(victorious.equals(player)){
             switch(fight){
                 case 1:
                     victoryAshCantor(player);
-                    break;
+                    return false;
                 case 2:
                     victoryPyreCastellan(player);
-                    break;
+                    return false;
             }
         }else {
-            isGameOver(player,scan,false);
+            return isGameOver(player,scan,false);
         }
+        return true;
     }
 
-    public static void encounterAshKing(RPGCharacter player, Scanner scan) {
+    public static boolean encounterAshKing(RPGCharacter player, Scanner scan) {
         RPGCharacter victorious;
         String name = player.getName();
         Role rPlayer = player.getRole();
@@ -916,15 +935,16 @@ public class Engine{
                 """,50);
         victorious = combat(player,theAshKing,scan);
 
-        combatDecisionAshKing(player,scan,victorious);
+        return combatDecisionAshKing(player,scan,victorious);
     }
 
-    public static void combatDecisionAshKing(RPGCharacter player, Scanner scan, RPGCharacter victorious) {
+    public static boolean combatDecisionAshKing(RPGCharacter player, Scanner scan, RPGCharacter victorious) {
         if(victorious.equals(player)){
             victoryAshKing(player);
+            return false;
         }else {
             defeatAshKing(player);
-            isGameOver(player,scan,false);
+            return isGameOver(player,scan,false);
         }
     }
 
@@ -1076,28 +1096,31 @@ public class Engine{
                     victor = player;
                     break;
                 }
-                if (enemyHitChance() && !dodge) {
-                    if (!moveEnemy) {
-                        rPlayer.setHealth(rEnemy.getWeapon().useWeapon(rPlayer.getHealth()));
+                if(!dodge) {
+                    if (enemyHitChance()) {
+                        if (!moveEnemy) {
+                            rPlayer.setHealth(rEnemy.getWeapon().useWeapon(rPlayer.getHealth()));
+                            typeOut(String.format("""
+                                    %s strikes with %s!
+                                    
+                                    The attack hits! You lose %.2f of your life-force.
+                                    """, enemy.getName(), rEnemy.getWeapon().name(), rEnemy.getWeapon().damage()), 25);
+                        }
+                        if (moveEnemy && rEnemy.getAbility().type().equals("damage")) {
+                            rPlayer.setHealth(rPlayer.getHealth() - rEnemy.getAbility().getDamage());
+                            typeOut(String.format("""
+                                    %s charges at you with hatred in their eyes!
+                                    
+                                    The attack hits! You lose %.2f of your life-force.
+                                    """, enemy.getName(), rEnemy.getAbility().getDamage()), 25);
+                        }
+                    } else {
                         typeOut(String.format("""
-                                %s strikes with %s!
+                                %s misses their attack!
                                 
-                                The attack hits! You lose %.2f of your life-force.
-                                """, enemy.getName(), rEnemy.getWeapon().name(), rEnemy.getWeapon().damage()), 25);
-                    } else if (moveEnemy && rEnemy.getAbility().type().equals("damage")) {
-                        rPlayer.setHealth(rPlayer.getHealth() - rEnemy.getAbility().getDamage());
-                        typeOut(String.format("""
-                                %s charges at you with hatred in their eyes!
-                                
-                                The attack hits! You lose %.2f of your life-force.
-                                """, enemy.getName(), rEnemy.getAbility().getDamage()), 25);
+                                Fate smiles upon you, hero...
+                                """, enemy.getName()), 25);
                     }
-                }else{
-                    typeOut(String.format("""
-                            %s misses their attack!
-                            
-                            Fate smiles upon you, hero...
-                            """,enemy.getName()),25);
                 }
                 if (rPlayer.getHealth() <= 0) {
                     typeOut(String.format("""
@@ -1118,7 +1141,7 @@ public class Engine{
         return victor;
     }
 
-    private static void viewStatus(RPGCharacter player, RPGCharacter enemy, Role rEnemy, Role rPlayer) {
+    public static void viewStatus(RPGCharacter player, RPGCharacter enemy, Role rEnemy, Role rPlayer) {
         typeOut(String.format("""
                 %s: %.2f HEALTH | LEVEL: %d
                 """, enemy.getName(), rEnemy.getHealth(), enemy.getLevel()), 25);
